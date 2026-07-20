@@ -31,7 +31,7 @@
 	},
 	"dependencies": {
 		"@discordjs/core": "2.5.0",
-		"@discordjs/rest": "^2.6.1",
+		"@discordjs/rest": "^2.6.3",
 		"@discordjs/ws": "^2.0.4",
 		"@libsql/client": "^0.17.4",
 		"@ticketpm/core": "^0.0.14",
