@@ -49,6 +49,7 @@ import {
 	userCanAccessTicketType
 } from "@/features/tickets/config-access";
 import { TICKET_ACCESS_ALLOW } from "@/features/tickets/constants";
+import { reserveTicketId } from "@/features/tickets/id-allocation";
 import {
 	appendMessageText,
 	finalizeMessageTemplate,
@@ -280,7 +281,9 @@ async function createTicket(
 	}
 
 	const user = getInteractionUser(interaction);
-	const ticketNumber = (await getNextTicketNumber(app)).toString();
+	// Reserve before Discord work so every rendered number matches the eventual database primary key.
+	const ticketId = await reserveTicketId(app);
+	const ticketNumber = ticketId.toString();
 	const createdAt = Date.now();
 	const channelName = renderChannelName(ticketType.channelNameTemplate ?? app.config.tickets.channelNameTemplate, {
 		createdById: user.id,
@@ -318,6 +321,7 @@ async function createTicket(
 	await pinTicketWelcomeMessage(app, channel.id, ticketMessage.id);
 
 	await app.db.insert(ticketsTable).values({
+		id: ticketId,
 		channelId: channel.id,
 		creationMessageId: ticketMessage.id,
 		type: ticketTypeKey,
@@ -608,11 +612,6 @@ async function getUserOpenTicketCount(app: BotApp, userId: string) {
 		.where(and(eq(ticketsTable.createdBy, userId), isNull(ticketsTable.closedAt)));
 
 	return Number(rows[0]?.count ?? 0);
-}
-
-async function getNextTicketNumber(app: BotApp) {
-	const rows = await app.db.select({ count: count() }).from(ticketsTable);
-	return Number(rows[0]?.count ?? 0) + 1;
 }
 
 function createDefaultTicketOpenReason(app: BotApp): TicketOpenReasonData {
