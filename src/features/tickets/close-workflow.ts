@@ -214,6 +214,8 @@ async function closeTicket(
 	const closer = getInteractionUser(interaction);
 	const normalizedReason = normalizeCloseReason(app, reason);
 	const claimedBy = ticket.claimedBy;
+	const invitedUserIds = getInvitedUserIds(ticket);
+	const closeDmRecipientIds = [ticket.createdBy, ...invitedUserIds];
 	const closeUsersPromise = Promise.all([
 		app.client.api.users.get(ticket.createdBy).catch(() => null),
 		claimedBy ? app.client.api.users.get(claimedBy).catch(() => null) : Promise.resolve(null)
@@ -231,8 +233,6 @@ async function closeTicket(
 		.where(eq(ticketsTable.channelId, ticket.channelId));
 
 	if (!app.config.tickets.close.deleteChannelOnClose) {
-		const invitedUserIds = getInvitedUserIds(ticket);
-
 		runCloseTaskInBackground(app, ticket.channelId, "disable ticket actions", async () => {
 			// Preserve the original ticket message while preventing new actions.
 			await disableTicketActionButtons(app, ticket.channelId, ticket.creationMessageId);
@@ -296,7 +296,7 @@ async function closeTicket(
 
 	if (app.config.tickets.close.deleteChannelOnClose && app.config.tickets.close.dmUserOnClose) {
 		void status.update(app.LL.tickets.close.status.sending_close_confirmation());
-		await sendCloseDm(app, ticket.createdBy, ticketType, closeMessageTokens);
+		await sendCloseDms(app, closeDmRecipientIds, ticketType, closeMessageTokens);
 	}
 
 	if (app.config.tickets.close.deleteChannelOnClose) {
@@ -318,7 +318,7 @@ async function closeTicket(
 	const closeTasks: Promise<unknown>[] = [app.client.api.channels.createMessage(ticket.channelId, closeSummaryMessage)];
 
 	if (app.config.tickets.close.dmUserOnClose) {
-		closeTasks.push(sendCloseDm(app, ticket.createdBy, ticketType, closeMessageTokens));
+		closeTasks.push(sendCloseDms(app, closeDmRecipientIds, ticketType, closeMessageTokens));
 	}
 
 	void status.update(
@@ -541,6 +541,15 @@ function runCloseTaskInBackground(app: BotApp, channelId: string, action: string
 	void task().catch((error) => {
 		app.logger.error(`Failed to ${action} for ticket channel ${channelId}.`, error);
 	});
+}
+
+async function sendCloseDms(
+	app: BotApp,
+	userIds: string[],
+	ticketType: ReturnType<typeof getTicketType>,
+	tokens: CloseMessageTokens
+) {
+	await Promise.all(userIds.map((userId) => sendCloseDm(app, userId, ticketType, tokens)));
 }
 
 async function sendCloseDm(
