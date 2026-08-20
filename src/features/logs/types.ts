@@ -49,6 +49,10 @@ export interface TicketCloseLogEvent extends BaseTicketLogEvent {
 	transcriptUrl?: string | null;
 }
 
+export interface TicketReopenLogEvent extends BaseTicketLogEvent {
+	kind: "ticketReopen";
+}
+
 export interface TicketDeleteLogEvent extends BaseTicketLogEvent {
 	kind: "ticketDelete";
 	reason: string;
@@ -76,6 +80,7 @@ export type TicketLogEvent =
 	| TicketClaimLogEvent
 	| TicketUnclaimLogEvent
 	| TicketCloseLogEvent
+	| TicketReopenLogEvent
 	| TicketDeleteLogEvent
 	| UserAddedLogEvent
 	| UserRemovedLogEvent

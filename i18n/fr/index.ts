@@ -39,6 +39,9 @@ const fr: Translation = {
 		close: {
 			description: "Fermer le ticket actuel"
 		},
+		reopen: {
+			description: "Rouvrir le ticket actuel"
+		},
 		cleardm: {
 			description: "Effacer l'historique des tickets du bot dans vos MP",
 			starting: "Suppression de votre historique de tickets en MP...",
@@ -118,6 +121,7 @@ const fr: Translation = {
 		},
 		actions: {
 			close_ticket: "Fermer le ticket",
+			reopen_ticket: "Rouvrir le ticket",
 			claim_ticket: "Prendre en charge",
 			unclaim_ticket: "Libérer le ticket",
 			delete_ticket: "Supprimer le ticket"
@@ -147,6 +151,12 @@ const fr: Translation = {
 			not_ticket: "Ce salon n'est pas un ticket.",
 			only_closed_delete: "Seuls les tickets fermés peuvent être supprimés depuis ce bouton.",
 			only_staff_delete: "Seul le staff peut supprimer ce ticket."
+		},
+		reopen: {
+			not_ticket: "Ce salon n'est pas un ticket.",
+			only_closed: "Seuls les tickets fermés peuvent être rouverts.",
+			only_staff: "Seul le staff peut rouvrir ce ticket.",
+			success: "Ticket rouvert. Les accès des participants et les actions du ticket ont été restaurés."
 		},
 		transcript: {
 			collecting_messages: "Collecte des messages du ticket...",
@@ -264,6 +274,12 @@ const fr: Translation = {
 				action: "{actorMention} a fermé {ticketChannelMention}.",
 				details:
 					"**Ticket** : #{ticketId} - {ticketTypeName}\n**Ouvert par** : {createdByMention}\n**Statut de prise en charge** : {claimStatus}\n**Ancienneté** : {ticketAge}\n**Raison** : {reason}\n**Transcription** : {transcriptStatus}"
+			},
+			ticket_reopened: {
+				title: "## Ticket rouvert",
+				action: "{actorMention} a rouvert {ticketChannelMention}.",
+				details:
+					"**Ticket** : #{ticketId} - {ticketTypeName}\n**Ouvert par** : {createdByMention}\n**Statut de prise en charge** : {claimStatus}\n**Ancienneté** : {ticketAge}"
 			},
 			ticket_deleted: {
 				title: "## Ticket supprimé",

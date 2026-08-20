@@ -16,55 +16,36 @@ This notice must not be removed, obscured, or replaced.
 import { ComponentType } from "@discordjs/core";
 import type { LoadedMessageTemplate, MessageTemplateContext } from "@/features/tickets/types";
 
-const ticketClosedMessage = ({ LL }: MessageTemplateContext): LoadedMessageTemplate => ({
+const ticketReopenedLogMessage = ({ LL }: MessageTemplateContext): LoadedMessageTemplate => ({
 	components: [
 		{
 			type: ComponentType.Container,
-			accent_color: 16106539,
+			accent_color: 5763719,
 			components: [
+				{ type: ComponentType.TextDisplay, content: LL.logs.templates.ticket_reopened.title() },
 				{
 					type: ComponentType.TextDisplay,
-					content: LL.tickets.templates.ticket_closed.title()
-				},
-				{
-					type: ComponentType.TextDisplay,
-					content: LL.tickets.templates.ticket_closed.subtitle({ userId: "{userId}" })
-				},
-				{
-					type: ComponentType.TextDisplay,
-					content: LL.tickets.templates.ticket_closed.details({
-						reason: "{reason}",
-						claimStatus: "{claimStatus}",
-						transcriptStatus: "{transcriptStatus}"
+					content: LL.logs.templates.ticket_reopened.action({
+						actorMention: "{actorMention}",
+						ticketChannelMention: "{ticketChannelMention}"
 					})
 				},
 				{
 					type: ComponentType.TextDisplay,
-					content: LL.tickets.templates.ticket_closed.closed_by({ closerName: "{closerName}" })
-				},
-				{
-					type: ComponentType.ActionRow,
-					components: [
-						{
-							type: ComponentType.Button,
-							custom_id: "{reopenButtonCustomId}",
-							label: LL.tickets.actions.reopen_ticket(),
-							style: 3
-						},
-						{
-							type: ComponentType.Button,
-							custom_id: "{deleteButtonCustomId}",
-							label: LL.tickets.actions.delete_ticket(),
-							style: 4
-						}
-					]
+					content: LL.logs.templates.ticket_reopened.details({
+						ticketId: "{ticketId}",
+						ticketTypeName: "{ticketTypeName}",
+						createdByMention: "{createdByMention}",
+						claimStatus: "{claimStatus}",
+						ticketAge: "{ticketAge}"
+					})
 				}
 			]
 		}
 	]
 });
 
-export default ticketClosedMessage;
+export default ticketReopenedLogMessage;
 
 /*
 Ticket-Bot is licensed under the GNU Affero General Public License,

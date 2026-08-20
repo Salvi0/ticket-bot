@@ -575,14 +575,26 @@ async function sendCloseDm(
 
 async function buildCloseChannelMessage(app: BotApp, ticketType: ReturnType<typeof getTicketType>, tokens: CloseMessageTokens) {
 	const deleteButtonCustomId = createCustomId("tickets", "delete-closed");
+	const reopenButtonCustomId = createCustomId("tickets", "reopen");
 	const messageTemplate = await loadMessageTemplate(app, resolveCloseChannelMessageReference(app, ticketType), {
 		...tokens,
-		deleteButtonCustomId
+		deleteButtonCustomId,
+		reopenButtonCustomId
 	});
 
 	return finalizeMessageTemplate(
 		appendMessageButton(
-			messageTemplate,
+			appendMessageButton(
+				messageTemplate,
+				!hasMessageComponentCustomId(messageTemplate, reopenButtonCustomId)
+					? ({
+							type: ComponentType.Button,
+							custom_id: reopenButtonCustomId,
+							label: app.LL.tickets.actions.reopen_ticket(),
+							style: ButtonStyle.Success
+						} satisfies APIButtonComponentWithCustomId)
+					: undefined
+			),
 			!hasMessageComponentCustomId(messageTemplate, deleteButtonCustomId)
 				? ({
 						type: ComponentType.Button,
