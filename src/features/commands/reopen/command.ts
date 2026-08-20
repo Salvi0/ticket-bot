@@ -13,35 +13,16 @@ project repository or to its website.
 This notice must not be removed, obscured, or replaced.
 */
 
-import { defineFeature } from "@/core/defineFeature";
-import { handleRemoveUsersSelect } from "@/features/commands/remove/command";
-import { handleClaimButton, handleUnclaimButton } from "@/features/tickets/claim-workflow";
-import { handleCloseButton, handleCloseReasonSubmit, handleDeleteClosedTicketButton } from "@/features/tickets/close-workflow";
-import { handleReopenButton } from "@/features/tickets/reopen-workflow";
-import { handleOpenFormSubmit, handleOpenPanelSelector, handlePanelButtons, handlePanelSelect } from "@/features/tickets/service";
+import { defineCommand } from "@/core/defineCommand";
+import { executeReopenCommand } from "@/features/tickets/reopen-workflow";
 
-const ticketsFeature = defineFeature({
-	key: "tickets",
-	buttons: {
-		claim: handleClaimButton,
-		close: handleCloseButton,
-		"delete-closed": handleDeleteClosedTicketButton,
-		"open-select": handleOpenPanelSelector,
-		"open-type": handlePanelButtons,
-		reopen: handleReopenButton,
-		unclaim: handleUnclaimButton
-	},
-	stringSelects: {
-		"panel-select": handlePanelSelect,
-		"remove-users": handleRemoveUsersSelect
-	},
-	modals: {
-		"submit-close-reason": handleCloseReasonSubmit,
-		"submit-open-form": handleOpenFormSubmit
-	}
+export default defineCommand({
+	data: (LL) => ({
+		name: "reopen",
+		description: LL.commands.reopen.description()
+	}),
+	execute: executeReopenCommand
 });
-
-export default ticketsFeature;
 
 /*
 Ticket-Bot is licensed under the GNU Affero General Public License,

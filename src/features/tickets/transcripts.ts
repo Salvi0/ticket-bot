@@ -15,7 +15,7 @@ This notice must not be removed, obscured, or replaced.
 
 import { TicketPmUploadClient } from "@ticketpm/core";
 import { buildEnrichedDiscordApiTranscriptData } from "@ticketpm/discord-api";
-import { eq } from "drizzle-orm";
+import { and, eq, isNotNull } from "drizzle-orm";
 import type { BotApp } from "@/core/types";
 import { ticketsTable } from "@/db/schema";
 
@@ -41,7 +41,12 @@ export async function startTranscriptJob(
 	const promise = createTranscript(app, ticketChannelId, options?.onStatus)
 		.then(async (transcriptUrl) => {
 			if (transcriptUrl) {
-				await app.db.update(ticketsTable).set({ transcriptUrl }).where(eq(ticketsTable.channelId, ticketChannelId));
+				// A timed-out upload can finish after staff reopen the ticket. Only
+				// associate the transcript while the ticket is still closed.
+				await app.db
+					.update(ticketsTable)
+					.set({ transcriptUrl })
+					.where(and(eq(ticketsTable.channelId, ticketChannelId), isNotNull(ticketsTable.closedAt)));
 			}
 
 			return transcriptUrl;

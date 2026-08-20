@@ -47,6 +47,12 @@ const ticketClosedReportMessage = ({ LL }: MessageTemplateContext): LoadedMessag
 					components: [
 						{
 							type: ComponentType.Button,
+							custom_id: "{reopenButtonCustomId}",
+							label: LL.tickets.actions.reopen_ticket(),
+							style: 3
+						},
+						{
+							type: ComponentType.Button,
 							custom_id: "{deleteButtonCustomId}",
 							label: LL.tickets.actions.delete_ticket(),
 							style: 4

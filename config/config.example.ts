@@ -40,6 +40,7 @@ export default defineConfig("0.0.1", {
 			ticketClaim: true,
 			ticketUnclaim: true,
 			ticketClose: true,
+			ticketReopen: true,
 			ticketDelete: true,
 			userAdded: true,
 			userRemoved: true,

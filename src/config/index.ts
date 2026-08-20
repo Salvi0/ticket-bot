@@ -36,6 +36,7 @@ interface ConfigV0_0_1 {
 			ticketClaim?: boolean;
 			ticketUnclaim?: boolean;
 			ticketClose?: boolean;
+			ticketReopen?: boolean;
 			ticketDelete?: boolean;
 			userAdded?: boolean;
 			userRemoved?: boolean;

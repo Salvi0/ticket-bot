@@ -39,6 +39,9 @@ const en: BaseTranslation = {
 		close: {
 			description: "Close the current ticket"
 		},
+		reopen: {
+			description: "Reopen the current ticket"
+		},
 		cleardm: {
 			description: "Clear the bot's ticket history from your DMs",
 			starting: "Clearing your ticket DM history...",
@@ -118,6 +121,7 @@ const en: BaseTranslation = {
 		},
 		actions: {
 			close_ticket: "Close Ticket",
+			reopen_ticket: "Reopen Ticket",
 			claim_ticket: "Claim Ticket",
 			unclaim_ticket: "Unclaim Ticket",
 			delete_ticket: "Delete Ticket"
@@ -147,6 +151,12 @@ const en: BaseTranslation = {
 			not_ticket: "This channel is not a ticket.",
 			only_closed_delete: "Only closed tickets can be deleted from this button.",
 			only_staff_delete: "Only staff can delete this ticket."
+		},
+		reopen: {
+			not_ticket: "This channel is not a ticket.",
+			only_closed: "Only closed tickets can be reopened.",
+			only_staff: "Only staff can reopen this ticket.",
+			success: "Ticket reopened. Participant access and ticket actions have been restored."
 		},
 		transcript: {
 			collecting_messages: "Collecting ticket messages...",
@@ -266,6 +276,12 @@ const en: BaseTranslation = {
 				action: "{actorMention:string} closed {ticketChannelMention:string}.",
 				details:
 					"**Ticket**: #{ticketId:string} - {ticketTypeName:string}\n**Opened By**: {createdByMention:string}\n**Claim Status**: {claimStatus:string}\n**Open Age**: {ticketAge:string}\n**Reason**: {reason:string}\n**Transcript**: {transcriptStatus:string}"
+			},
+			ticket_reopened: {
+				title: "## Ticket Reopened",
+				action: "{actorMention:string} reopened {ticketChannelMention:string}.",
+				details:
+					"**Ticket**: #{ticketId:string} - {ticketTypeName:string}\n**Opened By**: {createdByMention:string}\n**Claim Status**: {claimStatus:string}\n**Ticket Age**: {ticketAge:string}"
 			},
 			ticket_deleted: {
 				title: "## Ticket Deleted",

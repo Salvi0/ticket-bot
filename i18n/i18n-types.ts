@@ -5,7 +5,7 @@ import type { BaseTranslation as BaseTranslationType, LocalizedString, RequiredP
 export type BaseTranslation = BaseTranslationType;
 export type BaseLocale = "en";
 
-export type Locales = "en" | "fr";
+export type Locales = "fr" | "en";
 
 export type Translation = RootTranslation;
 
@@ -115,6 +115,12 @@ type RootTranslation = {
 		close: {
 			/**
 			 * C​l​o​s​e​ ​t​h​e​ ​c​u​r​r​e​n​t​ ​t​i​c​k​e​t
+			 */
+			description: string;
+		};
+		reopen: {
+			/**
+			 * R​e​o​p​e​n​ ​t​h​e​ ​c​u​r​r​e​n​t​ ​t​i​c​k​e​t
 			 */
 			description: string;
 		};
@@ -341,6 +347,10 @@ type RootTranslation = {
 			 */
 			close_ticket: string;
 			/**
+			 * R​e​o​p​e​n​ ​T​i​c​k​e​t
+			 */
+			reopen_ticket: string;
+			/**
 			 * C​l​a​i​m​ ​T​i​c​k​e​t
 			 */
 			claim_ticket: string;
@@ -438,6 +448,24 @@ type RootTranslation = {
 			 * O​n​l​y​ ​s​t​a​f​f​ ​c​a​n​ ​d​e​l​e​t​e​ ​t​h​i​s​ ​t​i​c​k​e​t​.
 			 */
 			only_staff_delete: string;
+		};
+		reopen: {
+			/**
+			 * T​h​i​s​ ​c​h​a​n​n​e​l​ ​i​s​ ​n​o​t​ ​a​ ​t​i​c​k​e​t​.
+			 */
+			not_ticket: string;
+			/**
+			 * O​n​l​y​ ​c​l​o​s​e​d​ ​t​i​c​k​e​t​s​ ​c​a​n​ ​b​e​ ​r​e​o​p​e​n​e​d​.
+			 */
+			only_closed: string;
+			/**
+			 * O​n​l​y​ ​s​t​a​f​f​ ​c​a​n​ ​r​e​o​p​e​n​ ​t​h​i​s​ ​t​i​c​k​e​t​.
+			 */
+			only_staff: string;
+			/**
+			 * T​i​c​k​e​t​ ​r​e​o​p​e​n​e​d​.​ ​P​a​r​t​i​c​i​p​a​n​t​ ​a​c​c​e​s​s​ ​a​n​d​ ​t​i​c​k​e​t​ ​a​c​t​i​o​n​s​ ​h​a​v​e​ ​b​e​e​n​ ​r​e​s​t​o​r​e​d​.
+			 */
+			success: string;
 		};
 		transcript: {
 			/**
@@ -872,6 +900,30 @@ type RootTranslation = {
 					"claimStatus" | "createdByMention" | "reason" | "ticketAge" | "ticketId" | "ticketTypeName" | "transcriptStatus"
 				>;
 			};
+			ticket_reopened: {
+				/**
+				 * #​#​ ​T​i​c​k​e​t​ ​R​e​o​p​e​n​e​d
+				 */
+				title: string;
+				/**
+				 * {​a​c​t​o​r​M​e​n​t​i​o​n​}​ ​r​e​o​p​e​n​e​d​ ​{​t​i​c​k​e​t​C​h​a​n​n​e​l​M​e​n​t​i​o​n​}​.
+				 * @param {string} actorMention
+				 * @param {string} ticketChannelMention
+				 */
+				action: RequiredParams<"actorMention" | "ticketChannelMention">;
+				/**
+				 * *​*​T​i​c​k​e​t​*​*​:​ ​#​{​t​i​c​k​e​t​I​d​}​ ​-​ ​{​t​i​c​k​e​t​T​y​p​e​N​a​m​e​}​
+			​*​*​O​p​e​n​e​d​ ​B​y​*​*​:​ ​{​c​r​e​a​t​e​d​B​y​M​e​n​t​i​o​n​}​
+			​*​*​C​l​a​i​m​ ​S​t​a​t​u​s​*​*​:​ ​{​c​l​a​i​m​S​t​a​t​u​s​}​
+			​*​*​T​i​c​k​e​t​ ​A​g​e​*​*​:​ ​{​t​i​c​k​e​t​A​g​e​}
+				 * @param {string} claimStatus
+				 * @param {string} createdByMention
+				 * @param {string} ticketAge
+				 * @param {string} ticketId
+				 * @param {string} ticketTypeName
+				 */
+				details: RequiredParams<"claimStatus" | "createdByMention" | "ticketAge" | "ticketId" | "ticketTypeName">;
+			};
 			ticket_deleted: {
 				/**
 				 * #​#​ ​T​i​c​k​e​t​ ​D​e​l​e​t​e​d
@@ -1071,6 +1123,12 @@ export type TranslationFunctions = {
 		close: {
 			/**
 			 * Close the current ticket
+			 */
+			description: () => LocalizedString;
+		};
+		reopen: {
+			/**
+			 * Reopen the current ticket
 			 */
 			description: () => LocalizedString;
 		};
@@ -1286,6 +1344,10 @@ export type TranslationFunctions = {
 			 */
 			close_ticket: () => LocalizedString;
 			/**
+			 * Reopen Ticket
+			 */
+			reopen_ticket: () => LocalizedString;
+			/**
 			 * Claim Ticket
 			 */
 			claim_ticket: () => LocalizedString;
@@ -1383,6 +1445,24 @@ export type TranslationFunctions = {
 			 * Only staff can delete this ticket.
 			 */
 			only_staff_delete: () => LocalizedString;
+		};
+		reopen: {
+			/**
+			 * This channel is not a ticket.
+			 */
+			not_ticket: () => LocalizedString;
+			/**
+			 * Only closed tickets can be reopened.
+			 */
+			only_closed: () => LocalizedString;
+			/**
+			 * Only staff can reopen this ticket.
+			 */
+			only_staff: () => LocalizedString;
+			/**
+			 * Ticket reopened. Participant access and ticket actions have been restored.
+			 */
+			success: () => LocalizedString;
 		};
 		transcript: {
 			/**
@@ -1761,6 +1841,29 @@ export type TranslationFunctions = {
 					ticketId: string;
 					ticketTypeName: string;
 					transcriptStatus: string;
+				}) => LocalizedString;
+			};
+			ticket_reopened: {
+				/**
+				 * ## Ticket Reopened
+				 */
+				title: () => LocalizedString;
+				/**
+				 * {actorMention} reopened {ticketChannelMention}.
+				 */
+				action: (arg: { actorMention: string; ticketChannelMention: string }) => LocalizedString;
+				/**
+				 * **Ticket**: #{ticketId} - {ticketTypeName}
+				 **Opened By**: {createdByMention}
+				 **Claim Status**: {claimStatus}
+				 **Ticket Age**: {ticketAge}
+				 */
+				details: (arg: {
+					claimStatus: string;
+					createdByMention: string;
+					ticketAge: string;
+					ticketId: string;
+					ticketTypeName: string;
 				}) => LocalizedString;
 			};
 			ticket_deleted: {
